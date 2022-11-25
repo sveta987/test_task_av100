@@ -1,0 +1,25 @@
+.container{
+    width: 60%;
+}
+.subheading{
+    font-size: medium;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.inputStyle{
+    margin-top: 10px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    padding: 3px 10px;
+}
+.inputStyle:hover{
+    outline: none;
+    border: 1px solid gray;
+}
+.inputStyle:focus{
+    outline: none;
+    border: 1px solid #2DC574;
+}
+
+
