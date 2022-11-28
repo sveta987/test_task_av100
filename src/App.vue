@@ -1,5 +1,5 @@
 <template>
-  <form action="" class="m-[20px]">
+  <div class="m-[20px]">
     <div class=" sip flex flex-row">
       <h3 class="subheading">Звонок через SIP</h3>
       <label class="inline-flex relative  mr-5 cursor-pointer">
@@ -7,10 +7,9 @@
         <div
           class="w-11 h-6 bg-white rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] border-[1px] after:border-gray-500 border-gray-500 peer-checked:border peer-checked:border-[#2DC574] peer-checked:after:bg-[#2DC574] after:border peer-checked:after:border-[#2DC574] after:rounded-full after:h-5 after:w-5 after:transition-all peer"></div>
       </label>
-      <p class="ml-3 text-sm text-gray-400 ">Включите эту функцию чтобы Авито и другие площадки не <br/> блокировали ваш
+      <p class="ml-3 text-sm text-gray-400">Включите эту функцию чтобы Авито и другие площадки не <br/> блокировали ваш
         аккаунт. Будет выглядеть так, будто звонки ,<br/> совершаются с разных номеров.</p>
     </div>
-
     <div class="account flex flex-row mt-[30px]">
       <h3 class="subheading">Учётная запись</h3>
       <div class="container ml-[90px] text-sm">
@@ -35,32 +34,29 @@
           <input type="text" id="surname" v-model="surname" class="inputStyle ml-[17px] w-[60%]">
           <p class="text-gray-400 text-[10px] flex justify-center">* Не обязательно</p>
         </div>
-
       </div>
     </div>
-
     <div class="notification flex flex-row mt-[40px]">
       <h3 class="subheading">Оповещения о новых <br/> подборках</h3>
       <div class=" container ml-[35px]">
-        <p class=" text-sm text-gray-400 ">Выберите, куда будут приходить уведомления при появлении <br/> автомобилей,
+        <p class=" text-sm text-gray-400">Выберите, куда будут приходить уведомления при появлении <br/> автомобилей,
           которые подходят под критерии вашей подборки.</p>
         <h5 class="my-[25px] font-bold text-[15px]">Уведомления</h5>
         <div class="flex flex-col">
           <div class="py-[15px] w-[73%]">
             <input type="radio" :id="'off'" :name="'off'" v-model="notification"
                    :value="'off'"
-                   class="accent-green-600 h-[15px] ">
+                   class="accent-green-600 h-[15px]">
             <label :for="'for'" class=" ">
               Выкл
             </label>
           </div>
-
           <div class="border-y-[1px] py-[15px] flex justify-between w-[73%]">
             <div>
               <input type="radio" :id="'email'" :name="'email'" v-model="notification"
                      :value="'email'"
                      class="accent-green-600 h-[15px] w-[20px]">
-              <label :for="'email'" class=" ">
+              <label :for="'email'">
                 Email
               </label>
             </div>
@@ -72,11 +68,8 @@
               />
               <input v-show="isOpenInput.inputNames.includes('email')" v-model="email" type="text"
                      class="inputStyle !my-[0px]">
-
             </div>
-
           </div>
-
           <div class="py-[15px] flex justify-between w-[73%]">
             <div>
               <input type="radio" :id="'telegram'" :name="'telegram'" v-model="notification"
@@ -95,14 +88,11 @@
               <input v-show="isOpenInput.inputNames.includes('telegram')" v-model="telegram" type="text"
                      class="inputStyle !my-[0px]">
             </div>
-
           </div>
-
         </div>
       </div>
     </div>
-
-    <div class="restSettings flex flex-row mt-[30px] ">
+    <div class="restSettings flex flex-row mt-[30px]">
       <h3 class="subheading">Прочие настройки</h3>
       <div class="flex flex-col container">
         <div class="ml-[60px] flex flex-row justify-between w-[73%]">
@@ -121,21 +111,21 @@
                                  @mouseleave="mouseOverHelp = false"/>
           <div v-show="mouseOverHelp" class="absolute bottom-[10%] left-[45%]">
             <div class="arrow-up"></div>
-            <div class=" w-[370px] bg-[#2DC574] rounded-[5px] p-[5px] ">
+            <div class="w-[370px] bg-[#2DC574] rounded-[5px] p-[5px]">
               <p class="text-white text-[12px] text-center">Лента будет автоматически обновляться 1 раз в 3 секунды</p>
             </div>
           </div>
-
         </div>
       </div>
     </div>
-
     <div class="container ml-[210px]">
       <button class="w-[74%] rounded-[5px] text-white bg-[#2DC574] py-[5px] mt-[20px]" @click="submitForm"> Сохранить
       </button>
     </div>
-  </form>
-  <div v-if="isUpdate">aaaaaa</div>
+  </div>
+  <div v-if="isUpdate" class="absolute top-[5%] left-[50%] bg-[#2DC574]">
+    <h4 class="text-white p-[15px]">Сохранено</h4>
+  </div>
 </template>
 
 <script>
@@ -155,6 +145,8 @@ export default {
   },
   data() {
     return {
+      id: null,
+      token: null,
       callFromSIP: false,
       company: '',
       login: '',
@@ -166,8 +158,6 @@ export default {
       email: '',
       autoUpdate: false,
       mouseOverHelp: false,
-      coordinateX: null,
-      coordinateY: null,
       isOpenInput: {
         inputNames: [],
         isOpen: false,
@@ -182,7 +172,7 @@ export default {
     },
     submitForm() {
       axios
-        .put('https://api.av100.ru/v3/user/1902384',
+        .put('https://api.av100.ru/v3/user/' + this.id,
           {
             login: this.login,
             email: this.email,
@@ -193,28 +183,24 @@ export default {
           {
             headers: {
               "content-type": 'text/json',
+              "X-User-Token": this.token,
               "X-Api-Key": '8bcfb6e1-4fa8-4fae-872c-a435bbdbe8d9',
               "X-Device-OS": 'chrome'
             }
           }
-        ).then(this.isUpdate = true)
+        )
+        .then(
+          this.isUpdate = true,
+          setTimeout(() => {
+            this.isUpdate = false
+          }, 3000)
+        )
       ;
     }
   },
   mounted() {
-    // axios
-    //   .get('https://api.av100.ru/v3/swagger/docs/v3')
-    //   .then((response) => {
-    //     console.log(response.data);
-    //   })
-    //   .catch((e) => {
-    //     this.errors.push(e);
-    //   });
-    // const res =
-
-
-
-
+    this.id = '1902384';
+    this.token = 'efece37f-f55f-4431-89dc-5943b10c1976';
   }
 }
 </script>
